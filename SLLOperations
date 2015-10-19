@@ -1,0 +1,196 @@
+//package LinkedList.singleLL;
+
+import java.util.Random;
+
+public class SLLOperations {
+
+	private static SingleLinkedListNode head;
+	private static SingleLinkedListNode tail;
+	
+	public SingleLinkedListNode getHead() {
+		return head;
+	}
+
+	public void setHead(SingleLinkedListNode head) {
+		this.head = head;
+	}
+
+	public SingleLinkedListNode getTail() {
+		return tail;
+	}
+
+	public void setTail(SingleLinkedListNode tail) {
+		this.tail = tail;
+	}
+	
+
+	public static void main(String[] args){
+		SLLOperations list = new SLLOperations();
+		list.insert();
+		list.print();
+		int no = 77, n = 5;
+		System.out.println("Length : "+list.getLength());
+		System.out.println("Search (iterative) : "+no+"? "+(list.searchIterative(no)?"found":"not found")  );
+		System.out.println("Search (iterative) : "+~no+"? "+(list.searchIterative(~no)?"found":"not found")  );
+		
+		System.out.println("Search (recursive) : "+no+"? "+(list.searchRecursive(no)?"found":"not found")  );
+		System.out.println("Search (recursive) : "+~no+"? "+(list.searchRecursive(~no)?"found":"not found")  );
+		//list.print();
+		list.swapNodes(77,  66);
+		System.out.println("After swapped");
+		list.print();
+		
+		SingleLinkedListNode nthNode = list.getNthNodeIterative(n);
+		System.out.println(null != nthNode? nthNode.getData():" Null");
+	}
+
+	/*get Nth node in a Linked List*/
+	private SingleLinkedListNode getNthNodeIterative(int n) {
+		SingleLinkedListNode temp = head;
+		int count = 1;
+		while (null != temp){
+			if(count == n ){
+				return temp;
+			}
+			count++;
+			temp = temp.getNext();
+		}
+		return null;
+	}
+
+	/*Swap nodes in a linked list without swapping data*/
+	private void swapNodes(int m, int n){
+		if(m == n){
+			return;
+		}
+		SingleLinkedListNode prev1 = null;
+		SingleLinkedListNode prev2 = null;
+		SingleLinkedListNode prev = head;
+		SingleLinkedListNode temp = head;
+		
+		while(null != temp){
+			if(temp.getData() == m){
+				prev1 = prev;
+			} 
+			if(temp.getData() == n ){
+				prev2 = prev;
+			}
+			prev = temp;
+			temp = temp.getNext();
+			
+			if(null != prev1 && null != prev2){
+				break;
+			}
+		}
+		
+		if(null == prev1 || null == prev2){
+			System.out.println("Both data should present in the list.");
+			return;
+		}
+		
+		if(prev1 == head){
+			SingleLinkedListNode node1 = head;
+			SingleLinkedListNode node2 = prev2.getNext();
+			
+			SingleLinkedListNode n1next = node1.getNext();
+			node1.setNext(node2.getNext());
+			node2.setNext(n1next);
+			prev2.setNext(node1);
+			
+			head = node2;
+			
+		}else if(prev2 == head){
+			SingleLinkedListNode node2 = head;
+			SingleLinkedListNode node1 = prev1.getNext();
+			
+			SingleLinkedListNode n2next = node2.getNext();
+			node1.setNext(node1.getNext());
+			node2.setNext(n2next);
+			prev2.setNext(node2);
+			
+			head = node1;
+		} else {
+			SingleLinkedListNode node1 = prev1.getNext();
+			SingleLinkedListNode node2 = prev2.getNext();
+			
+			prev1.setNext(node2);
+			SingleLinkedListNode node2next = node2.getNext();
+			node2.setNext(node1.getNext());
+			
+			prev2.setNext(node1);
+			node1.setNext(node2next);
+		}
+	}
+	
+	
+	private boolean searchRecursive(int no) {
+		return searchRecur(head, no);
+	}
+	
+	private boolean searchRecur(SingleLinkedListNode head, int no ){
+		if(null == head)
+			return false;
+		return (head.getData() == no)?true: searchRecur(head.getNext(), no);
+	}
+
+	private boolean searchIterative(int no) {
+		SingleLinkedListNode temp = getHead();
+		while(null != temp){
+			if(no == temp.getData()){
+				return true;
+			}
+			temp = temp.getNext();			
+		}
+		return false;
+	}
+
+	private int getLength() {
+		int len = 0 ;
+		SingleLinkedListNode temp = getHead();
+		while(null != temp){
+			len++;
+			temp = temp.getNext();			
+		}
+		return len;
+	}
+
+	private void print() {
+		SingleLinkedListNode temp = getHead();
+		
+		while(null != temp){
+			System.out.print(temp.getData()+" -> ");
+			temp = temp.getNext();
+		}
+		System.out.print("Null\n");
+	}
+
+	private void insert() {
+		Random rand = new Random();
+		addNode(77);
+		int i = 0;
+		while(i++ < 5){
+			addNode(rand.nextInt()%100);
+		}
+		
+		addNode(88);
+		addNode(99);
+		addNode(66);
+		addNode(11);
+	}
+
+	private void addNode(int d) {
+		SingleLinkedListNode newNode = new SingleLinkedListNode();
+		newNode.setData(d);
+		newNode.setNext(null);
+		
+		if(null == getHead()){
+			setHead(newNode);
+			setTail(newNode);
+		} else {
+			getTail().setNext(newNode);
+			setTail(newNode);
+		}
+		
+		//System.out.println(getHead().getData() +"\t"+getTail().getData());
+	}
+}
