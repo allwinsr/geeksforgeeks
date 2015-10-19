@@ -4,3 +4,7 @@ Q2) given the x,y,z coordinates of a billion stars (basically the entire array c
 Answer -> use a max heap that contains the k minimum distances.
 Time-> n(log k)
 then the question was changed to -> now that we have several computers which can combine to fit the entire set of stars, how will you then solve it?
+
+Articulation point
+
+http://www.geeksforgeeks.org/dynamic-programming-set-14-variations-of-lis/
